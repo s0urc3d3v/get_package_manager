@@ -1,0 +1,6 @@
+web type index
+FTP = 0
+HTTP = 1
+git = 2
+subversion = 3
+4 = ERROR
