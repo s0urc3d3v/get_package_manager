@@ -28,6 +28,12 @@ def unzip_file(archive_type):  # NOTE: 0 = zip / 1 = tar
 def configure_source(source_type, compile_arguments):
     if source_type is 0 and "posix" in os: # os.name returns 'posix' on OSX systems
         subprocess_arguments = ('sudo', './configure')
+        process = subprocess.Popen(subprocess_arguments, stdout=subprocess.PIPE)
+        print("Configuring...")
+        output = process.stdout.read()
+        print(output)
+    else:
+        print('source type not recognized')
 
 
 
