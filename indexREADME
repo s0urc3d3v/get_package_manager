@@ -4,3 +4,7 @@ HTTP = 1
 git = 2
 subversion = 3
 4 = ERROR
+
+source type index
+0 = gcc
+10 = other
