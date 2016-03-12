@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import argparse, urllib, requests, os, subprocess, zipfile, tarfile
-
+os = os.name
 
 def findTypeAndUnzip():
     fileName, fileExtention = os.path.splitext("packageName")
@@ -25,13 +25,18 @@ def unzipFile(archive_type):  # NOTE: 0 = zip / 1 = tar
     else:
         print("type pass failed")
 
+def configure_source(source_type, compile_arguments):
+    if source_type is 0 and "posix" in os: # os.name returns 'posix' on OSX systems
+        subprocess_arguments = ('sudo', './configure')
 
-def compileSourceIfNessary(sourceType, compileCommands):  # compileCommands can be left null if not nessary
+
+
+def compileSourceIfNessary(sourceType, compile_arguments):  # compileCommands can be left null if not necessary
     # NOTE: 0 = make (gnu) "sudo make install"
-    if compileCommands is not None:
+    if compile_arguments is not None:
         if sourceType == 0:
-            subprocessArguments = ('sudo', 'make', 'install', 'packageFile')
-            process = subprocess.Popen(subprocessArguments, stdout=subprocess.PIPE)
+            subprocess_arguments = ('sudo', 'make', 'install', 'packageFile')
+            process = subprocess.Popen(subprocess_arguments, stdout=subprocess.PIPE)
             print('compiling')
             print('output...')
             process.wait()
