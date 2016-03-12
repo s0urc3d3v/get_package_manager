@@ -2,14 +2,14 @@
 import argparse, urllib, requests, os, subprocess, zipfile, tarfile
 os = os.name
 
-def findTypeAndUnzip():
-    fileName, fileExtention = os.path.splitext("packageName")
-    if fileExtention is ".zip" or fileExtention is '.gzip':
+def find_type_and_unzip():
+    file_name, file_extention = os.path.splitext("packageName")
+    if file_extention is ".zip" or file_extention is '.gzip':
         # File is a zip
         fileHandle = open('packageFile', 'rb')
         zipfile.ZipFile("packageName").extractall()
 
-    elif fileExtention is '.tar' or fileExtention is '.tar.gz':
+    elif file_extention is '.tar' or file_extention is '.tar.gz':
         # File is either a tar or tar.gz and can be extracted with 'tar'
         tar = tarfile.open("packageFile")
         tar.extractall()
@@ -17,7 +17,7 @@ def findTypeAndUnzip():
         print("File extension not recognized ")
 
 
-def unzipFile(archive_type):  # NOTE: 0 = zip / 1 = tar
+def unzip_file(archive_type):  # NOTE: 0 = zip / 1 = tar
     if archive_type is 0:
         zipfile.ZipFile("packageFile").extractall()
     elif archive_type is 1:
@@ -31,10 +31,10 @@ def configure_source(source_type, compile_arguments):
 
 
 
-def compileSourceIfNessary(sourceType, compile_arguments):  # compileCommands can be left null if not necessary
+def compile_source_if_necessary(source_type, compile_arguments):  # compileCommands can be left null if not necessary
     # NOTE: 0 = make (gnu) "sudo make install"
     if compile_arguments is not None:
-        if sourceType == 0:
+        if source_type == 0:
             subprocess_arguments = ('sudo', 'make', 'install', 'packageFile')
             process = subprocess.Popen(subprocess_arguments, stdout=subprocess.PIPE)
             print('compiling')
@@ -74,8 +74,8 @@ def download_package(type, package_name):
         if i == package_name:
             index = i
             break
-    URLlines = [line.rstrip('\n') for line in open("packageURL")]
-    url = URLlines[index]
+    url_lines = [line.rstrip('\n') for line in open("packageURL")]
+    url = url_lines[index]
     if type is 0:
         ftp_download(package_name, url)
     elif type is 1:
@@ -89,20 +89,20 @@ def download_package(type, package_name):
 
 
 def check_type(package_name):
-    FTPList = [line.rstrip('\n') for line in open("FTPindex")]
-    for i in FTPList:
+    ftp_list = [line.rstrip('\n') for line in open("FTPindex")]
+    for i in ftp_list:
         if i is package_name:
             return 0
-    HTTPList = [line.rstrip('\n') for line in open("HTTPindex")]
-    for iter in HTTPList:
+    http_list = [line.rstrip('\n') for line in open("HTTPindex")]
+    for iter in http_list:
         if iter is package_name:
             return 1
-    GITlist = [line.rstrip('\n') for line in open("GITindex")]
-    for iterate in GITlist:
+    git_list = [line.rstrip('\n') for line in open("GITindex")]
+    for iterate in git_list:
         if iterate is package_name:
             return 2
-    SUBVERSIONlist = [line.rstrip('\n') for line in open("SUBVERSIONlist")]
-    for iteration in SUBVERSIONlist:
+    subversion_list = [line.rstrip('\n') for line in open("SUBVERSIONlist")]
+    for iteration in subversion_list:
         if (iteration is package_name):
             return 3
     return 4
