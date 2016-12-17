@@ -76,13 +76,13 @@ def subversion_download(package_name, url):
 def download_package(type, package_name):
     index = 0
     lines = [line.rstrip('\n') for line in open("packages")]
-    for i in lines:
-        if i == package_name:
+    for i in range(0, len(lines)):
+        if lines[i] == package_name:
             index = i
             break
     url_lines = [line.rstrip('\n') for line in open("packageURL")]
     url = url_lines[index]
-    if type is 0:
+    if type == 0:
         ftp_download(package_name, url)
     elif type is 1:
         http_download(package_name, url)
@@ -97,7 +97,7 @@ def download_package(type, package_name):
 def check_type(package_name):
     ftp_list = [line.rstrip('\n') for line in open("FTPindex")]
     for i in ftp_list:
-        if i is package_name:
+        if i == package_name:
             return 0
     http_list = [line.rstrip('\n') for line in open("HTTPindex")]
     for iter in http_list:
@@ -117,7 +117,7 @@ def check_type(package_name):
 def verify_package(package_name):
     lines = [line.rstrip('\n') for line in open("packages")]
     for i in lines:
-        if (i is package_name):
+        if i == package_name:
             return True
     return False
 
