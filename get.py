@@ -1,6 +1,20 @@
 #!/usr/bin/env python3
-import argparse, urllib, requests, os, subprocess, zipfile, tarfile
+import argparse
+import os
+import requests
+import subprocess
+import tarfile
+import urllib
+import zipfile
+
 os = os.name
+
+
+def create_file_name(url):  # Takes the file name from the url so it can be correctly extracted
+    for i in range(len(url), -1, -1):
+        if url[i] == '/':
+            return url[i:]
+
 
 def find_type_and_unzip():
     file_name, file_extention = os.path.splitext("packageName")
@@ -25,8 +39,9 @@ def unzip_file(archive_type):  # NOTE: 0 = zip / 1 = tar
     else:
         print("type pass failed")
 
+
 def configure_source(source_type, compile_arguments):
-    if source_type is 0 or source_type is 10 and "posix" in os: # os.name returns 'posix' on OSX systems
+    if source_type is 0 or source_type is 10 and "posix" in os:  # os.name returns 'posix' on OSX systems
         subprocess_arguments = ('sudo', './configure')
         process = subprocess.Popen(subprocess_arguments, stdout=subprocess.PIPE)
         print("Configuring...")
@@ -34,7 +49,6 @@ def configure_source(source_type, compile_arguments):
         print(output)
     else:
         print('source type not recognized')
-
 
 
 def compile_source_if_necessary(source_type, compile_arguments):  # compileCommands can be left null if not necessary
@@ -54,7 +68,8 @@ def compile_source_if_necessary(source_type, compile_arguments):  # compileComma
 
 
 def ftp_download(package, url):
-    urllib.urlretrieve(url, 'packageFile')
+    urllib.urlretrieve(url)
+    print 'hello'
     # NOTE: url must be prefixed with ftp://
 
 
