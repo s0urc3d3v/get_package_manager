@@ -8,6 +8,7 @@ import urllib
 import zipfile
 
 os = os.name
+current_file_name = None
 
 
 def create_file_name(url):  # Takes the file name from the url so it can be correctly extracted
@@ -68,9 +69,11 @@ def compile_source_if_necessary(source_type, compile_arguments):  # compileComma
 
 
 def ftp_download(url):
-    urllib.urlretrieve(url, create_file_name(url))
+    global current_file_name  # bekommen var Berichtigungen
+    current_file_name = create_file_name(url)
+    urllib.urlretrieve(url, current_file_name)
     print 'hello'
-    # NOTE: url must be prefixed with ftp://
+    # NOTE: url müsst mit ftp:// beginnern
 
 
 def http_download(package_name, url):
