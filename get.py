@@ -11,9 +11,9 @@ os = os.name
 
 
 def create_file_name(url):  # Takes the file name from the url so it can be correctly extracted
-    for i in range(len(url), -1, -1):
+    for i in range(len(url) - 1, -1, -1):
         if url[i] == '/':
-            return url[i:]
+            return url[i + 1:]
 
 
 def find_type_and_unzip():
@@ -67,8 +67,8 @@ def compile_source_if_necessary(source_type, compile_arguments):  # compileComma
             print("Not recognized compile type passed as sourceType")
 
 
-def ftp_download(package, url):
-    urllib.urlretrieve(url)
+def ftp_download(url):
+    urllib.urlretrieve(url, create_file_name(url))
     print 'hello'
     # NOTE: url must be prefixed with ftp://
 
@@ -98,7 +98,7 @@ def download_package(type, package_name):
     url_lines = [line.rstrip('\n') for line in open("packageURL")]
     url = url_lines[index]
     if type == 0:
-        ftp_download(package_name, url)
+        ftp_download(url)
     elif type is 1:
         http_download(package_name, url)
     elif type is 2:
