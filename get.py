@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 import argparse
 import os
 import requests
@@ -8,7 +9,7 @@ import urllib
 import zipfile
 
 os = os.name
-current_file_name = None
+current_file_name = ""
 
 
 def create_file_name(url):  # Takes the file name from the url so it can be correctly extracted
@@ -17,14 +18,21 @@ def create_file_name(url):  # Takes the file name from the url so it can be corr
             return url[i + 1:]
 
 
-def find_type_and_unzip():
-    file_name, file_extention = os.path.splitext("packageName")
-    if file_extention is ".zip" or file_extention is '.gzip':
+def find_type_and_unarchive():
+    file_extension = ''
+    for i in range(0, len(current_file_name)):
+        if current_file_name[i] == '.':
+            if ((current_file_name[i + 1]).isdigit() and (current_file_name[i - 1]).isdigit()) != True:
+                file_extension = current_file_name[i:]
+                break
+    if file_extension == '':
+        print('Datei ist korrupt, tut mir leid')
+    if file_extension is ".zip" or file_extension is '.gzip':
         # File is a zip
         fileHandle = open('packageFile', 'rb')
         zipfile.ZipFile("packageName").extractall()
 
-    elif file_extention is '.tar' or file_extention is '.tar.gz':
+    elif file_extension is '.tar' or file_extension is '.tar.gz':
         # File is either a tar or tar.gz and can be extracted with 'tar'
         tar = tarfile.open("packageFile")
         tar.extractall()
@@ -71,8 +79,9 @@ def compile_source_if_necessary(source_type, compile_arguments):  # compileComma
 def ftp_download(url):
     global current_file_name  # bekommen var Berichtigungen
     current_file_name = create_file_name(url)
-    urllib.urlretrieve(url, current_file_name)
-    print 'hello'
+    urllib.urlretrieve(url, current_file_name)  # TODO zulassen datei zu speeren ändern Ort sein
+    find_type_and_unarchive()
+    compile_source_if_necessary()
     # NOTE: url müsst mit ftp:// beginnern
 
 
