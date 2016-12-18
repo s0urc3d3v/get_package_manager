@@ -77,7 +77,7 @@ def configure_source(source_type, compile_arguments):
 def compile_source_if_necessary(source_type, compile_arguments):  # compileCommands can be left null if not necessary
     # NOTE: 0 = make (gnu) "sudo make install"
     if source_type == 0:
-        subprocess_arguments = ('sudo', 'make', 'install', source_path)
+        subprocess_arguments = ('./compile_scripts/compile_gcc.sh')
         process = subprocess.Popen(subprocess_arguments, stdout=subprocess.PIPE)
         print('compiling')
         print('output...')
@@ -93,7 +93,7 @@ def ftp_download(url):
     current_file_name = create_file_name(url)
     urllib.urlretrieve(url, current_file_name)  # TODO zulassen datei zu speeren ändern Ort sein
     find_type_and_unarchive()
-    compile_source_if_necessary()
+    compile_source_if_necessary(0, None)
     # NOTE: url müsst mit ftp:// beginnern
 
 
