@@ -1,0 +1,1 @@
+del gcc-5.2.0.tar.gz

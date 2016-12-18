@@ -10,6 +10,18 @@ import zipfile
 
 os = os.name
 current_file_name = ""
+source_path = ""
+
+
+def find_source_path():
+    dir_contents = os.listdir(os.getcwd())
+    for x in dir_contents:
+        if (current_file_name[:4] in x) and (os.path.isdir(x)) and (x != 'compile_scripts'):
+            source_path = os.getcwd() + '/' + x
+            return
+        else:
+            print 'Kann nicht gefunden die Extrahiert datei, tut mir leid'
+            return
 
 
 def create_file_name(url):  # Takes the file name from the url so it can be correctly extracted
@@ -27,15 +39,17 @@ def find_type_and_unarchive():
                 break
     if file_extension == '':
         print('Datei ist korrupt, tut mir leid')
-    if file_extension is ".zip" or file_extension is '.gzip':
+    if file_extension == ".zip" or file_extension == '.gzip':
         # File is a zip
         fileHandle = open('packageFile', 'rb')
         zipfile.ZipFile("packageName").extractall()
 
-    elif file_extension is '.tar' or file_extension is '.tar.gz':
+    elif file_extension == '.tar' or file_extension == '.tar.gz':
         # File is either a tar or tar.gz and can be extracted with 'tar'
-        tar = tarfile.open("packageFile")
+        tar = tarfile.open(current_file_name)
         tar.extractall()
+        tar.close()
+        find_source_path()
     else:
         print("File extension not recognized ")
 
@@ -62,18 +76,16 @@ def configure_source(source_type, compile_arguments):
 
 def compile_source_if_necessary(source_type, compile_arguments):  # compileCommands can be left null if not necessary
     # NOTE: 0 = make (gnu) "sudo make install"
-    if compile_arguments is not None:
-        if source_type == 0:
-            subprocess_arguments = ('sudo', 'make', 'install', 'packageFile')
-            process = subprocess.Popen(subprocess_arguments, stdout=subprocess.PIPE)
-            print('compiling')
-            print('output...')
-            process.wait()
-            output = process.stdout.read()
-            print(output)
-
-        else:
-            print("Not recognized compile type passed as sourceType")
+    if source_type == 0:
+        subprocess_arguments = ('sudo', 'make', 'install', source_path)
+        process = subprocess.Popen(subprocess_arguments, stdout=subprocess.PIPE)
+        print('compiling')
+        print('output...')
+        process.wait()
+        output = process.stdout.read()
+        print(output)
+    else:
+        print("Not recognized compile type passed as sourceType")
 
 
 def ftp_download(url):

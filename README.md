@@ -1,6 +1,8 @@
 #GET package manager
 ## a *nix package manager
 
+#WARNING
+Right now everything is over HTTP NOT https.  This should change in the future.
 -----
 
 ###To add support for a new package by branching
@@ -16,10 +18,8 @@
 * May need root to compile software correctly
 
 -----------------
+
 follow me on twitter [@m3lbing](https://twitter.com/m3lbing)
-
-
-find me on xda: [xda@s0urc3_d3v3l0pm3nt](http://forum.xda-developers.com/member.php?u=6637230)
 
 find me on reddit: [s0urc3_d3v3l0pm3nt](https://www.reddit.com/user/s0urc3_d3v3l0pm3nt)
 
