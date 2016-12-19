@@ -2,13 +2,15 @@
 # -*- coding: utf-8 -*-
 import argparse
 import os
-import requests
 import subprocess
 import tarfile
 import urllib
 import zipfile
 
-os = os.name
+import requests
+from pathlib import Path
+
+os_name = os.name
 current_file_name = ""
 source_path = ""
 
@@ -20,7 +22,7 @@ def find_source_path():
             source_path = os.getcwd() + '/' + x
             return
         else:
-            print 'Kann nicht gefunden die Extrahiert datei, tut mir leid'
+            print ('Kann nicht gefunden die Extrahiert datei, tut mir leid')
             return
 
 
@@ -91,7 +93,9 @@ def compile_source_if_necessary(source_type, compile_arguments):  # compileComma
 def ftp_download(url):
     global current_file_name  # bekommen var Berichtigungen
     current_file_name = create_file_name(url)
-    urllib.urlretrieve(url, current_file_name)  # TODO zulassen datei zu speeren ändern Ort sein
+    source_exists = os.path.exists(os.path.abspath(current_file_name))
+    if not source_exists:
+        urllib.urlretrieve(url, current_file_name)  # TODO zulassen datei zu speeren ändern Ort sein
     find_type_and_unarchive()
     compile_source_if_necessary(0, None)
     # NOTE: url müsst mit ftp:// beginnern
