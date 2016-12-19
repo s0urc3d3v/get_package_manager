@@ -6,7 +6,8 @@ import subprocess
 import tarfile
 import urllib
 import zipfile
-
+import clint
+from clint.textui import progress
 import requests
 from pathlib import Path
 
@@ -102,7 +103,10 @@ def ftp_download(url):
 
 
 def http_download(package_name, url):
-    requests.get(url, 'packageFile')
+    responce = requests.get(url, create_file_name(url))
+    length = responce.headers.get('content-length')
+    for block in progress.bar #fetig
+
     # NOTE: url must be prefixed with http:// or https://
 
 
@@ -144,15 +148,15 @@ def check_type(package_name):
             return 0
     http_list = [line.rstrip('\n') for line in open("HTTPindex")]
     for iter in http_list:
-        if iter is package_name:
+        if iter == package_name:
             return 1
     git_list = [line.rstrip('\n') for line in open("GITindex")]
     for iterate in git_list:
-        if iterate is package_name:
+        if iterate == package_name:
             return 2
     subversion_list = [line.rstrip('\n') for line in open("SUBVERSIONlist")]
     for iteration in subversion_list:
-        if (iteration is package_name):
+        if iteration == package_name:
             return 3
     return 4
 
