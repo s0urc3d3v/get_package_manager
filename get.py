@@ -101,11 +101,19 @@ def ftp_download(url):
     compile_source_if_necessary(0, None)
     # NOTE: url müsst mit ftp:// beginnern
 
-
+    # TODO: macht das datei nicht hinterladen ob datei Existiert
 def http_download(package_name, url):
-    responce = requests.get(url, create_file_name(url))
-    length = responce.headers.get('content-length')
-    for block in progress.bar #fetig
+    file_name = create_file_name(url)
+    print 'hinterladen getstartet'
+    responce = requests.get(url, stream=True)
+    with open(file_name, 'wb') as f:
+        for block in responce.iter_content(chunk_size=1024):
+            if block:
+                f.write(block)
+    print 'hinterladen fertig'
+
+
+
 
     # NOTE: url must be prefixed with http:// or https://
 
