@@ -46,19 +46,19 @@ def find_type_and_unarchive():
         fileHandle = open('packageFile', 'rb')
         zipfile.ZipFile("packageName").extractall()
 
-    elif file_extension == '.tar' or file_extension == '.tar.gz':
-        # File is either a tar or tar.gz and can be extracted with 'tar'
+    elif file_extension == '.tar' or file_extension == '.tar.gz' or file_extension == '.tgz':
+        #  File is either a tar or tar.gz and can be extracted with 'tar'
         tar = tarfile.open(current_file_name)
         tar.extractall()
         tar.close()
-        find_source_path()
-    elif file_extension == '.tgz':
-        tar = tarfile.open(current_file_name)
-        for x in tar:
-            tar.extract(x, os.getcwd() + "/" + "Python"):
+    # elif file_extension == '.tgz':
+    #     tar = tarfile.open(current_file_name)
+    #     for x in tar:
+    #         tar.extract(x, os.getcwd() + "/" + "PythonSource")
+    #         if x.name.find('.tgz') != -1 or x.name.find('.tar') != -1:
 
     else:
-        print("File extension not recognized ")
+        print("Datei erweiterung nicht gefunden!")
 
 
 def unzip_file(archive_type):  # NOTE: 0 = zip / 1 = tar
@@ -106,7 +106,11 @@ def ftp_download(url):
     # NOTE: url müsst mit ftp:// beginnern
 
     # TODO: macht das datei nicht hinterladen ob datei Existiert
+
+
 def http_download(package_name, url):
+    global current_file_name  # bekommen var Berichtigungen
+    current_file_name = create_file_name(url) #  Dies müsst in alles hinterladen methoden sein!
     file_name = create_file_name(url)
     print 'hinterladen getstartet'
     responce = requests.get(url, stream=True)
