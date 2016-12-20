@@ -12,14 +12,18 @@ import requests
 from pathlib import Path
 
 os_name = os.name
-current_file_name = ""
-source_path = ""
-
-
+jetzt_datei_namen = ''
+source_path = ''
+hinterladen_datei_namen = ''
+def löschen_hinterladen_datei():
+    print ''
+    #  müsst hinzufügen die hinterladen_datei_namen für diesem dingen
+def anrufen_skipt(skript_pfad):
+    subprocess.call('kompilieren_skript/' + skript_pfad)
 def find_source_path():
     dir_contents = os.listdir(os.getcwd())
     for x in dir_contents:
-        if (current_file_name[:4] in x) and (os.path.isdir(x)) and (x != 'compile_scripts'):
+        if (jetzt_datei_namen[:4] in x) and (os.path.isdir(x)) and (x != 'kompilieren_skript'):
             source_path = os.getcwd() + '/' + x
             return
     print ('Kann nicht gefunden die Extrahiert datei, tut mir leid')
@@ -34,10 +38,10 @@ def create_file_name(url):  # Takes the file name from the url so it can be corr
 
 def find_type_and_unarchive():
     file_extension = ''
-    for i in range(0, len(current_file_name)):
-        if current_file_name[i] == '.':
-            if ((current_file_name[i + 1]).isdigit() and (current_file_name[i - 1]).isdigit()) != True:
-                file_extension = current_file_name[i:]
+    for i in range(0, len(jetzt_datei_namen)):
+        if jetzt_datei_namen[i] == '.':
+            if ((jetzt_datei_namen[i + 1]).isdigit() and (jetzt_datei_namen[i - 1]).isdigit()) != True:
+                file_extension = jetzt_datei_namen[i:]
                 break
     if file_extension == '':
         print('Datei ist korrupt, tut mir leid')
@@ -48,9 +52,10 @@ def find_type_and_unarchive():
 
     elif file_extension == '.tar' or file_extension == '.tar.gz' or file_extension == '.tgz':
         #  File is either a tar or tar.gz and can be extracted with 'tar'
-        tar = tarfile.open(current_file_name)
+        tar = tarfile.open(jetzt_datei_namen)
         tar.extractall()
         tar.close()
+        compile_source_if_necessary()
     # elif file_extension == '.tgz':
     #     tar = tarfile.open(current_file_name)
     #     for x in tar:
@@ -81,26 +86,20 @@ def configure_source(source_type, compile_arguments):
         print('source type not recognized')
 
 
-def compile_source_if_necessary(source_type, compile_arguments):  # compileCommands can be left null if not necessary
-    # NOTE: 0 = make (gnu) "sudo make install"
-    if source_type == 0:
-        subprocess_arguments = ('./compile_scripts/compile_gcc.sh')
-        process = subprocess.Popen(subprocess_arguments, stdout=subprocess.PIPE)
-        print('compiling')
-        print('output...')
-        process.wait()
-        output = process.stdout.read()
-        print(output)
-    else:
-        print("Not recognized compile type passed as sourceType")
-
+def compile_source_if_necessary():  # compileCommands can be left null if not necessary
+    if ('Python' in jetzt_datei_namen) and ('3' not in jetzt_datei_namen):  #  Python 2
+        print('Nicht Umgesetzt wurden noch')
+    elif ('Python' in jetzt_datei_namen) and ('3' in jetzt_datei_namen):  #  Python 3
+        anrufen_skipt('compile_python3.sh')  # Ich kennt dies können besser gemacht
+    elif 'gcc' in jetzt_datei_namen:
+        anrufen_skipt('compile_gcc.sh')
 
 def ftp_download(url):
-    global current_file_name  # bekommen var Berichtigungen
-    current_file_name = create_file_name(url)
-    source_exists = os.path.exists(os.path.abspath(current_file_name))
+    global jetzt_datei_namen  # bekommen var Berichtigungen
+    jetzt_datei_namen = create_file_name(url)
+    source_exists = os.path.exists(os.path.abspath(jetzt_datei_namen))
     if not source_exists:
-        urllib.urlretrieve(url, current_file_name)  # TODO zulassen datei zu speeren ändern Ort sein
+        urllib.urlretrieve(url, jetzt_datei_namen)  # TODO zulassen datei zu speeren ändern Ort sein
     find_type_and_unarchive()
     compile_source_if_necessary(0, None)
     # NOTE: url müsst mit ftp:// beginnern
@@ -109,18 +108,19 @@ def ftp_download(url):
 
 
 def http_download(package_name, url):
-    global current_file_name  # bekommen var Berichtigungen
-    current_file_name = create_file_name(url) #  Dies müsst in alles hinterladen methoden sein!
+    global jetzt_datei_namen  # bekommen var Berichtigungen
+    jetzt_datei_namen = create_file_name(url) #  Dies müsst in alles hinterladen methoden sein!
     file_name = create_file_name(url)
     print 'hinterladen getstartet'
     responce = requests.get(url, stream=True)
-    if not os.path.exists(os.path.abspath(current_file_name)):
+    if not os.path.exists(os.path.abspath(jetzt_datei_namen)):
         with open(file_name, 'wb') as f:
             for block in responce.iter_content(chunk_size=1024):
                 if block:
                     f.write(block)
     print 'hinterladen fertig'
     find_type_and_unarchive()
+    compile_source_if_necessary()
 
 
 
