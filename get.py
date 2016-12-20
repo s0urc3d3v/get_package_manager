@@ -22,9 +22,8 @@ def find_source_path():
         if (current_file_name[:4] in x) and (os.path.isdir(x)) and (x != 'compile_scripts'):
             source_path = os.getcwd() + '/' + x
             return
-        else:
-            print ('Kann nicht gefunden die Extrahiert datei, tut mir leid')
-            return
+    print ('Kann nicht gefunden die Extrahiert datei, tut mir leid')
+    return
 
 
 def create_file_name(url):  # Takes the file name from the url so it can be correctly extracted
@@ -53,6 +52,11 @@ def find_type_and_unarchive():
         tar.extractall()
         tar.close()
         find_source_path()
+    elif file_extension == '.tgz':
+        tar = tarfile.open(current_file_name)
+        for x in tar:
+            tar.extract(x, os.getcwd() + "/" + "Python"):
+
     else:
         print("File extension not recognized ")
 
@@ -106,11 +110,13 @@ def http_download(package_name, url):
     file_name = create_file_name(url)
     print 'hinterladen getstartet'
     responce = requests.get(url, stream=True)
-    with open(file_name, 'wb') as f:
-        for block in responce.iter_content(chunk_size=1024):
-            if block:
-                f.write(block)
+    if not os.path.exists(os.path.abspath(current_file_name)):
+        with open(file_name, 'wb') as f:
+            for block in responce.iter_content(chunk_size=1024):
+                if block:
+                    f.write(block)
     print 'hinterladen fertig'
+    find_type_and_unarchive()
 
 
 
