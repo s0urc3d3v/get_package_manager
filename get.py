@@ -179,7 +179,7 @@ def finden_art(package_name):
     return 4
 
 
-def überprüfung_package(package_name):
+def ueberpruefung_package(package_name):
     lines = [line.rstrip('\n') for line in open("packages")]
     for i in lines:
         if i == package_name:
@@ -192,7 +192,7 @@ def main():
     a.add_argument('package', type=str, help='the package you want to install')
     args = a.parse_args()
     package_name = args.package
-    if überprüfung_package(package_name):
+    if ueberpruefung_package(package_name):
         type = finden_art(package_name)
         if type is 0:
             hinterladen_package(0, package_name)
