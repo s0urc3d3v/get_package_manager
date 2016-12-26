@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
+cd gcc*
 ./contrib/download_prerequisites
-cd gcc-4.6.2
 mkdir out
 cd out
-$PWD/../gcc-4.6.2/configure --prefix=$HOME/gcc-4.6.2 --enable-languages=c,c++,fortran,go
+DIR_NAME=${PWD##*/}
+./configure --enable-languages=c,c++,fortran,go
 make
 make install
