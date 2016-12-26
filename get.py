@@ -55,7 +55,7 @@ def finden_art_und_entpack():
         tar = tarfile.open(jetzt_datei_namen)
         tar.extractall()
         tar.close()
-        kopilieren_code_fall_benötigt()
+        kopilieren_code_fall_benoetigt()
     # elif file_extension == '.tgz':
     #     tar = tarfile.open(current_file_name)
     #     for x in tar:
@@ -101,7 +101,7 @@ def hinterladen_mit_ftp(url):
     if not source_exists:
         urllib.urlretrieve(url, jetzt_datei_namen)  # TODO zulassen datei zu speeren ändern Ort sein
     finden_art_und_entpack()
-    kopilieren_code_fall_benötigt(0, None)
+    kopilieren_code_fall_benoetigt(0, None)
     # NOTE: url müsst mit ftp:// beginnern
 
     # TODO: macht das datei nicht hinterladen ob datei Existiert
@@ -120,7 +120,7 @@ def hinterladen_mit_http(package_name, url):
                     f.write(block)
     print 'hinterladen fertig'
     finden_art_und_entpack()
-    kopilieren_code_fall_benötigt()
+    kopilieren_code_fall_benoetigt()
 
 
 
