@@ -13,9 +13,11 @@ os_name = os.name
 jetzt_datei_namen = ''
 source_path = ''
 hinterladen_datei_namen = ''
-def löschen_hinterladen_datei():
+
+def loeschen_hinterladen_datei():
     print 'hello'
     #  müsst hinzufügen die hinterladen_datei_namen für diesem dingen
+
 def anrufen_skipt(skript_pfad):
     subprocess.call('kompilieren_skript/' + skript_pfad)
 def finden_code_pfad():
@@ -84,7 +86,7 @@ def konfigurieren_code(source_type, compile_arguments):
         print('source type not recognized')
 
 
-def kopilieren_code_fall_benötigt():  # compileCommands can be left null if not necessary
+def kopilieren_code_fall_benoetigt():  # compileCommands can be left null if not necessary
     if ('Python' in jetzt_datei_namen) and ('3' not in jetzt_datei_namen):  #  Python 2
         print('Nicht Umgesetzt wurden noch')
     elif ('Python' in jetzt_datei_namen) and ('3' in jetzt_datei_namen):  #  Python 3
