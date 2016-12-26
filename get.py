@@ -6,21 +6,19 @@ import subprocess
 import tarfile
 import urllib
 import zipfile
-import clint
-from clint.textui import progress
+
 import requests
-from pathlib import Path
 
 os_name = os.name
 jetzt_datei_namen = ''
 source_path = ''
 hinterladen_datei_namen = ''
 def löschen_hinterladen_datei():
-    print ''
+    print 'hello'
     #  müsst hinzufügen die hinterladen_datei_namen für diesem dingen
 def anrufen_skipt(skript_pfad):
     subprocess.call('kompilieren_skript/' + skript_pfad)
-def find_source_path():
+def finden_code_pfad():
     dir_contents = os.listdir(os.getcwd())
     for x in dir_contents:
         if (jetzt_datei_namen[:4] in x) and (os.path.isdir(x)) and (x != 'kompilieren_skript'):
@@ -30,13 +28,13 @@ def find_source_path():
     return
 
 
-def create_file_name(url):  # Takes the file name from the url so it can be correctly extracted
+def shaffen_datei_namen(url):  # Takes the file name from the url so it can be correctly extracted
     for i in range(len(url) - 1, -1, -1):
         if url[i] == '/':
             return url[i + 1:]
 
 
-def find_type_and_unarchive():
+def finden_art_und_entpack():
     file_extension = ''
     for i in range(0, len(jetzt_datei_namen)):
         if jetzt_datei_namen[i] == '.':
@@ -55,7 +53,7 @@ def find_type_and_unarchive():
         tar = tarfile.open(jetzt_datei_namen)
         tar.extractall()
         tar.close()
-        compile_source_if_necessary()
+        kopilieren_code_fall_benötigt()
     # elif file_extension == '.tgz':
     #     tar = tarfile.open(current_file_name)
     #     for x in tar:
@@ -66,7 +64,7 @@ def find_type_and_unarchive():
         print("Datei erweiterung nicht gefunden!")
 
 
-def unzip_file(archive_type):  # NOTE: 0 = zip / 1 = tar
+def entpack_datei(archive_type):  # NOTE: 0 = zip / 1 = tar
     if archive_type is 0:
         zipfile.ZipFile("packageFile").extractall()
     elif archive_type is 1:
@@ -75,7 +73,7 @@ def unzip_file(archive_type):  # NOTE: 0 = zip / 1 = tar
         print("type pass failed")
 
 
-def configure_source(source_type, compile_arguments):
+def konfigurieren_code(source_type, compile_arguments):
     if source_type is 0 or source_type is 10 and "posix" in os:  # os.name returns 'posix' on OSX systems
         subprocess_arguments = ('sudo', './configure')
         process = subprocess.Popen(subprocess_arguments, stdout=subprocess.PIPE)
@@ -86,7 +84,7 @@ def configure_source(source_type, compile_arguments):
         print('source type not recognized')
 
 
-def compile_source_if_necessary():  # compileCommands can be left null if not necessary
+def kopilieren_code_fall_benötigt():  # compileCommands can be left null if not necessary
     if ('Python' in jetzt_datei_namen) and ('3' not in jetzt_datei_namen):  #  Python 2
         print('Nicht Umgesetzt wurden noch')
     elif ('Python' in jetzt_datei_namen) and ('3' in jetzt_datei_namen):  #  Python 3
@@ -94,23 +92,23 @@ def compile_source_if_necessary():  # compileCommands can be left null if not ne
     elif 'gcc' in jetzt_datei_namen:
         anrufen_skipt('compile_gcc.sh')
 
-def ftp_download(url):
+def hinterladen_mit_ftp(url):
     global jetzt_datei_namen  # bekommen var Berichtigungen
-    jetzt_datei_namen = create_file_name(url)
+    jetzt_datei_namen = shaffen_datei_namen(url)
     source_exists = os.path.exists(os.path.abspath(jetzt_datei_namen))
     if not source_exists:
         urllib.urlretrieve(url, jetzt_datei_namen)  # TODO zulassen datei zu speeren ändern Ort sein
-    find_type_and_unarchive()
-    compile_source_if_necessary(0, None)
+    finden_art_und_entpack()
+    kopilieren_code_fall_benötigt(0, None)
     # NOTE: url müsst mit ftp:// beginnern
 
     # TODO: macht das datei nicht hinterladen ob datei Existiert
 
 
-def http_download(package_name, url):
+def hinterladen_mit_http(package_name, url):
     global jetzt_datei_namen  # bekommen var Berichtigungen
-    jetzt_datei_namen = create_file_name(url) #  Dies müsst in alles hinterladen methoden sein!
-    file_name = create_file_name(url)
+    jetzt_datei_namen = shaffen_datei_namen(url) #  Dies müsst in alles hinterladen methoden sein!
+    file_name = shaffen_datei_namen(url)
     print 'hinterladen getstartet'
     responce = requests.get(url, stream=True)
     if not os.path.exists(os.path.abspath(jetzt_datei_namen)):
@@ -119,8 +117,8 @@ def http_download(package_name, url):
                 if block:
                     f.write(block)
     print 'hinterladen fertig'
-    find_type_and_unarchive()
-    compile_source_if_necessary()
+    finden_art_und_entpack()
+    kopilieren_code_fall_benötigt()
 
 
 
@@ -128,17 +126,17 @@ def http_download(package_name, url):
     # NOTE: url must be prefixed with http:// or https://
 
 
-def git_download(package_name, url):
+def klon_mit_git(package_name, url):
     urllib.urlretrieve(url, 'packageFile')
     # NOTE url must be prefixed with git://
 
 
-def subversion_download(package_name, url):
+def klon_mit_subversion(package_name, url):
     urllib.urlretrieve(url, 'packageFile')
     # NOTE url must be prefixed with subverion prefix
 
 
-def download_package(type, package_name):
+def hinterladen_package(type, package_name):
     index = 0
     lines = [line.rstrip('\n') for line in open("packages")]
     for i in range(0, len(lines)):
@@ -148,18 +146,18 @@ def download_package(type, package_name):
     url_lines = [line.rstrip('\n') for line in open("packageURL")]
     url = url_lines[index]
     if type == 0:
-        ftp_download(url)
+        hinterladen_mit_ftp(url)
     elif type is 1:
-        http_download(package_name, url)
+        hinterladen_mit_http(package_name, url)
     elif type is 2:
-        git_download(package_name, url)
+        klon_mit_git(package_name, url)
     elif type is 3:
-        subversion_download(package_name, url)
+        klon_mit_subversion(package_name, url)
     else:
         print("ERROR: download function could not be run for an unknown reason")
 
 
-def check_type(package_name):
+def finden_art(package_name):
     ftp_list = [line.rstrip('\n') for line in open("FTPindex")]
     for i in ftp_list:
         if i == package_name:
@@ -179,7 +177,7 @@ def check_type(package_name):
     return 4
 
 
-def verify_package(package_name):
+def überprüfung_package(package_name):
     lines = [line.rstrip('\n') for line in open("packages")]
     for i in lines:
         if i == package_name:
@@ -192,16 +190,16 @@ def main():
     a.add_argument('package', type=str, help='the package you want to install')
     args = a.parse_args()
     package_name = args.package
-    if verify_package(package_name):
-        type = check_type(package_name)
+    if überprüfung_package(package_name):
+        type = finden_art(package_name)
         if type is 0:
-            download_package(0, package_name)
+            hinterladen_package(0, package_name)
         elif type is 1:
-            download_package(1, package_name)
+            hinterladen_package(1, package_name)
         elif type is 2:
-            download_package(2, package_name)
+            hinterladen_package(2, package_name)
         elif type is 3:
-            download_package(3, package_name)
+            hinterladen_package(3, package_name)
         else:
             print("Error: package download method could not be found")
             exit(0)
