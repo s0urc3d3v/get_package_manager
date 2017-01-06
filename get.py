@@ -30,6 +30,7 @@ def finden_code_pfad():
     return
 
 
+
 def shaffen_datei_namen(url):  # Takes the file name from the url so it can be correctly extracted
     for i in range(len(url) - 1, -1, -1):
         if url[i] == '/':
