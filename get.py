@@ -15,11 +15,10 @@ os_name = os.name
 jetzt_datei_namen = ''
 source_path = ''
 hinterladen_datei_namen = ''
-def löschen_hinterladen_datei():
-    print ''
-    #  müsst hinzufügen die hinterladen_datei_namen für diesem dingen
 def anrufen_skipt(skript_pfad):
-    subprocess.call('kompilieren_skript/' + skript_pfad)
+    subprocess.call("./" + skript_pfad)
+
+
 def find_source_path():
     dir_contents = os.listdir(os.getcwd())
     for x in dir_contents:
@@ -156,7 +155,7 @@ def download_package(type, package_name):
     elif type is 3:
         subversion_download(package_name, url)
     else:
-        print("ERROR: download function could not be run for an unknown reason")
+        print("FEHLER: ändern fehler")
 
 
 def check_type(package_name):
@@ -203,10 +202,10 @@ def main():
         elif type is 3:
             download_package(3, package_name)
         else:
-            print("Error: package download method could not be found")
+            print("FEHLER: Kann nicht hinterladen datei")
             exit(0)
     else:
-        print("Package not available at this time or could not be verified, sorry :( ")
+        print("jetzt Datei ist nicht verfügbar, bitte versuchen nochmals später")
 
 
 main()
