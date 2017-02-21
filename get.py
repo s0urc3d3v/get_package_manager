@@ -22,7 +22,7 @@ def loeschen_hinterladen_datei():
 
 def anrufen_skipt(skript_pfad):
     subprocess.call('kompilieren_skript/' + skript_pfad)
-def finden_code_pfad():
+def finden_code_pfad(skript_pfad):
     subprocess.call("./" + skript_pfad)
 
 
@@ -37,7 +37,7 @@ def find_source_path():
 
 
 
-def shaffen_datei_namen(url):  # Takes the file name from the url so it can be correctly extracted
+def shaffen_datei_namen(url):  # Bekomment die namen aus die datei fuer entpack
     for i in range(len(url) - 1, -1, -1):
         if url[i] == '/':
             return url[i + 1:]
