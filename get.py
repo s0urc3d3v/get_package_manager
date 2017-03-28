@@ -9,6 +9,7 @@ import zipfile
 import clint
 from clint.textui import progress
 import requests
+from os.path import expanduser
 from pathlib import Path
 
 os_name = os.name
@@ -21,7 +22,8 @@ def loeschen_herunterladen_datei():
     #  müsst hinzufügen die herunterladen_datei_namen für diesem dingen
 
 def anrufen_skipt(skript_pfad):
-    subprocess.call('./kompilieren_skript/' + skript_pfad)
+    path = os.getcwd() + "/kompilieren_skript/" + skript_pfad
+    subprocess.call(path, shell=True)
 def finden_code_pfad(skript_pfad):
     subprocess.call("./" + skript_pfad)
 
@@ -97,9 +99,9 @@ def kopilieren_code_fall_benoetigt():  # compileCommands can be left null if not
     if ('Python' in jetzt_datei_namen) and ('3' not in jetzt_datei_namen):  #  Python 2
         print('Nicht Umgesetzt wurden noch')
     elif ('Python' in jetzt_datei_namen) and ('3' in jetzt_datei_namen):  #  Python 3
-        anrufen_skipt('compile_python3.sh')  # Ich kennt dies können besser gemacht
+        anrufen_skipt('kompilieren_python3.sh')  # Ich kennt dies können besser gemacht
     elif 'gcc' in jetzt_datei_namen:
-        anrufen_skipt('compile_gcc.sh')
+        anrufen_skipt('kompilieren_gcc.sh')
 
 def herunterladen_mit_ftp(url):
     global jetzt_datei_namen  # bekommen var Berichtigungen
