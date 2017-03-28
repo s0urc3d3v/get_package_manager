@@ -14,14 +14,14 @@ from pathlib import Path
 os_name = os.name
 jetzt_datei_namen = ''
 source_path = ''
-hinterladen_datei_namen = ''
+herunterladen_datei_namen = ''
 
-def loeschen_hinterladen_datei():
+def loeschen_herunterladen_datei():
     print 'hello'
-    #  müsst hinzufügen die hinterladen_datei_namen für diesem dingen
+    #  müsst hinzufügen die herunterladen_datei_namen für diesem dingen
 
 def anrufen_skipt(skript_pfad):
-    subprocess.call('kompilieren_skript/' + skript_pfad)
+    subprocess.call('./kompilieren_skript/' + skript_pfad)
 def finden_code_pfad(skript_pfad):
     subprocess.call("./" + skript_pfad)
 
@@ -101,7 +101,7 @@ def kopilieren_code_fall_benoetigt():  # compileCommands can be left null if not
     elif 'gcc' in jetzt_datei_namen:
         anrufen_skipt('compile_gcc.sh')
 
-def hinterladen_mit_ftp(url):
+def herunterladen_mit_ftp(url):
     global jetzt_datei_namen  # bekommen var Berichtigungen
     jetzt_datei_namen = shaffen_datei_namen(url)
     source_exists = os.path.exists(os.path.abspath(jetzt_datei_namen))
@@ -111,21 +111,21 @@ def hinterladen_mit_ftp(url):
     kopilieren_code_fall_benoetigt()
     # NOTE: url müsst mit ftp:// beginnern
 
-    # TODO: macht das datei nicht hinterladen ob datei Existiert
+    # TODO: macht das datei nicht herunterladen ob datei Existiert
 
 
-def hinterladen_mit_http(package_name, url):
+def herunterladen_mit_http(package_name, url):
     global jetzt_datei_namen  # bekommen var Berichtigungen
-    jetzt_datei_namen = shaffen_datei_namen(url) #  Dies müsst in alles hinterladen methoden sein!
+    jetzt_datei_namen = shaffen_datei_namen(url) #  Dies müsst in alles herunterladen methoden sein!
     file_name = shaffen_datei_namen(url)
-    print 'hinterladen getstartet'
+    print 'herunterladen gestartet'
     responce = requests.get(url, stream=True)
     if not os.path.exists(os.path.abspath(jetzt_datei_namen)):
         with open(file_name, 'wb') as f:
             for block in responce.iter_content(chunk_size=1024):
                 if block:
                     f.write(block)
-    print 'hinterladen fertig'
+    print 'herunterladen fertig'
     finden_art_und_entpack()
     kopilieren_code_fall_benoetigt()
 
@@ -145,7 +145,7 @@ def klon_mit_subversion(package_name, url):
     # NOTE url must be prefixed with subverion prefix
 
 
-def hinterladen_package(type, package_name):
+def herunterladen_package(type, package_name):
     index = 0
     lines = [line.rstrip('\n') for line in open("packages")]
     for i in range(0, len(lines)):
@@ -155,9 +155,9 @@ def hinterladen_package(type, package_name):
     url_lines = [line.rstrip('\n') for line in open("packageURL")]
     url = url_lines[index]
     if type == 0:
-        hinterladen_mit_ftp(url)
+        herunterladen_mit_ftp(url)
     elif type is 1:
-        hinterladen_mit_http(package_name, url)
+        herunterladen_mit_http(package_name, url)
     elif type is 2:
         klon_mit_git(package_name, url)
     elif type is 3:
@@ -202,15 +202,15 @@ def main():
     if ueberpruefung_package(package_name):
         type = finden_art(package_name)
         if type is 0:
-            hinterladen_package(0, package_name)
+            herunterladen_package(0, package_name)
         elif type is 1:
-            hinterladen_package(1, package_name)
+            herunterladen_package(1, package_name)
         elif type is 2:
-            hinterladen_package(2, package_name)
+            herunterladen_package(2, package_name)
         elif type is 3:
-            hinterladen_package(3, package_name)
+            herunterladen_package(3, package_name)
         else:
-            print("FEHLER: Kann nicht hinterladen datei")
+            print("FEHLER: Kann nicht herunterladen datei")
             exit(0)
     else:
         print("jetzt Datei ist nicht verfügbar, bitte versuchen nochmals später")
