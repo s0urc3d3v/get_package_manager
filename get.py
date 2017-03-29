@@ -96,9 +96,16 @@ def konfigurieren_code(source_type, compile_arguments):
 
 
 def kopilieren_code_fall_benoetigt():  # compileCommands can be left null if not necessary
-    if ('Python' in jetzt_datei_namen) and ('3' not in jetzt_datei_namen):  #  Python 2
+
+    for n in range(0, len(jetzt_datei_namen)):
+        if jetzt_datei_namen[n] == '-':
+            Version = jetzt_datei_namen[n + 1:n + 2]
+            break
+    if Version.isdigit() == False:
+        print "Keine Version gefunden"
+    if ('Python' in jetzt_datei_namen) and ('2' in Version):  # Python 2
         print('Nicht Umgesetzt wurden noch')
-    elif ('Python' in jetzt_datei_namen) and ('3' in jetzt_datei_namen):  #  Python 3
+    elif ('Python' in jetzt_datei_namen) and ('3' in Version):  # Python 3
         anrufen_skipt('kompilieren_python3.sh')  # Ich kennt dies können besser gemacht
     elif 'gcc' in jetzt_datei_namen:
         anrufen_skipt('kompilieren_gcc.sh')
