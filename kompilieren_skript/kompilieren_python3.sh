@@ -18,3 +18,4 @@ if [[ $loeschen == "J" || $loeschen == "j" ]]; then
 else
     echo "Ausgebe gespeichert ist"
 fi
+exit
