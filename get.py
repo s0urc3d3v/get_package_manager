@@ -95,7 +95,7 @@ def konfigurieren_code(source_type, compile_arguments):
         print('source type not recognized')
 
 
-def kopilieren_code_fall_benoetigt():  # compileCommands can be left null if not necessary
+def kopilieren_code_fall_benoetigt():
 
     for n in range(0, len(jetzt_datei_namen)):
         if jetzt_datei_namen[n] == '-':
