@@ -19,8 +19,10 @@ herunterladen_datei_namen = ''
 
 def loeschen_herunterladen_datei():
     print 'hello'
-    #  müsst hinzufügen die herunterladen_datei_namen für diesem dingen
+    #  müsst hinzufügen die herunterladen_datei_namen für diesen dingen
 
+
+d
 def anrufen_skipt(skript_pfad):
     path = os.getcwd() + "/kompilieren_skript/" + skript_pfad
     subprocess.call(path, shell=True)
@@ -38,8 +40,7 @@ def find_source_path():
     return
 
 
-
-def shaffen_datei_namen(url):  # Bekomment die namen aus die datei fuer entpack
+def shaffen_datei_namen(url):  # Die namen bekommt aus die datei fuer entpack
     for i in range(len(url) - 1, -1, -1):
         if url[i] == '/':
             return url[i + 1:]
@@ -141,17 +142,17 @@ def herunterladen_mit_http(package_name, url):
 
 
 
-    # NOTE: url must be prefixed with http:// or https://
+    # Achtung: url müsst begonnen http:// or https:// mit
 
 
 def klon_mit_git(package_name, url):
     urllib.urlretrieve(url, 'packageFile')
-    # NOTE url must be prefixed with git://
+    # NOTE url müsst begonnen git:// mit
 
 
 def klon_mit_subversion(package_name, url):
     urllib.urlretrieve(url, 'packageFile')
-    # NOTE url must be prefixed with subverion prefix
+    # NOTE url müsst begonnensubverion mit
 
 
 def herunterladen_package(type, package_name):
@@ -208,7 +209,7 @@ def main():
     a.add_argument('package', type=str, help='the package you want to install')
     args = a.parse_args()
     package_name = args.package
-    if ueberpruefung_package(package_name):
+    if ueberpruefung_package(package_name) and:
         type = finden_art(package_name)
         if type is 0:
             herunterladen_package(0, package_name)
@@ -222,7 +223,7 @@ def main():
             print("FEHLER: Kann nicht herunterladen datei")
             exit(0)
     else:
-        print("jetzt Datei ist nicht verfügbar, bitte versuchen nochmals später")
+        print("Datei ist nicht verfügbar, bitte versuchen nochmals später")
 
 
 main()
