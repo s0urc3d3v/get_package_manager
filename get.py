@@ -17,15 +17,17 @@ jetzt_datei_namen = ''
 source_path = ''
 herunterladen_datei_namen = ''
 
+
 def loeschen_herunterladen_datei():
     print 'hello'
     #  müsst hinzufügen die herunterladen_datei_namen für diesen dingen
 
 
-d
 def anrufen_skipt(skript_pfad):
     path = os.getcwd() + "/kompilieren_skript/" + skript_pfad
     subprocess.call(path, shell=True)
+
+
 def finden_code_pfad(skript_pfad):
     subprocess.call("./" + skript_pfad)
 
@@ -47,26 +49,26 @@ def shaffen_datei_namen(url):  # Die namen bekommt aus die datei fuer entpack
 
 
 def finden_art_und_entpack():
-    file_extension = ''
+    dateiweiterung = ''
     for i in range(0, len(jetzt_datei_namen)):
         if jetzt_datei_namen[i] == '.':
             if ((jetzt_datei_namen[i + 1]).isdigit() and (jetzt_datei_namen[i - 1]).isdigit()) != True:
-                file_extension = jetzt_datei_namen[i:]
+                dateiweiterung = jetzt_datei_namen[i:]
                 break
-    if file_extension == '':
+    if dateiweiterung == '':
         print('Datei ist korrupt, tut mir leid')
-    if file_extension == ".zip" or file_extension == '.gzip':
+    if dateiweiterung == ".zip" or dateiweiterung == '.gzip':
         # File is a zip
         fileHandle = open('packageFile', 'rb')
         zipfile.ZipFile("packageName").extractall()
 
-    elif file_extension == '.tar' or file_extension == '.tar.gz' or file_extension == '.tgz':
+    elif dateiweiterung == '.tar' or dateiweiterung == '.tar.gz' or dateiweiterung == '.tgz':
         #  File is either a tar or tar.gz and can be extracted with 'tar'
         tar = tarfile.open(jetzt_datei_namen)
         tar.extractall()
         tar.close()
         kopilieren_code_fall_benoetigt()
-    # elif file_extension == '.tgz':
+    # elif dateiweiterung == '.tgz':
     #     tar = tarfile.open(current_file_name)
     #     for x in tar:
     #         tar.extract(x, os.getcwd() + "/" + "PythonSource")
@@ -85,7 +87,7 @@ def entpack_datei(archive_type):  # NOTE: 0 = zip / 1 = tar
         print("type pass failed")
 
 
-def konfigurieren_code(source_type, compile_arguments):
+def konfigurieren_code(source_type, kompiliern_streit):
     if source_type is 0 or source_type is 10 and "posix" in os:  # os.name returns 'posix' on OSX systems
         subprocess_arguments = ('sudo', './configure')
         process = subprocess.Popen(subprocess_arguments, stdout=subprocess.PIPE)
@@ -97,7 +99,6 @@ def konfigurieren_code(source_type, compile_arguments):
 
 
 def kopilieren_code_fall_benoetigt():
-
     for n in range(0, len(jetzt_datei_namen)):
         if jetzt_datei_namen[n] == '-':
             Version = jetzt_datei_namen[n + 1:n + 2]
@@ -110,6 +111,7 @@ def kopilieren_code_fall_benoetigt():
         anrufen_skipt('kompilieren_python3.sh')  # Ich kennt dies können besser gemacht
     elif 'gcc' in jetzt_datei_namen:
         anrufen_skipt('kompilieren_gcc.sh')
+
 
 def herunterladen_mit_ftp(url):
     global jetzt_datei_namen  # bekommen var Berichtigungen
@@ -126,7 +128,7 @@ def herunterladen_mit_ftp(url):
 
 def herunterladen_mit_http(package_name, url):
     global jetzt_datei_namen  # bekommen var Berichtigungen
-    jetzt_datei_namen = shaffen_datei_namen(url) #  Dies müsst in alles herunterladen methoden sein!
+    jetzt_datei_namen = shaffen_datei_namen(url)  # Dies müsst in alles herunterladen methoden sein!
     file_name = shaffen_datei_namen(url)
     print 'herunterladen gestartet'
     responce = requests.get(url, stream=True)
@@ -205,11 +207,11 @@ def ueberpruefung_package(package_name):
 
 
 def main():
-    a = argparse.ArgumentParser(description="a package manager for *nix")
-    a.add_argument('package', type=str, help='the package you want to install')
+    a = argparse.ArgumentParser(description="Paket Manager für OSX")
+    a.add_argument('paket', type=str, help='Das packet Sie will')
     args = a.parse_args()
     package_name = args.package
-    if ueberpruefung_package(package_name) and:
+    if ueberpruefung_package(package_name):
         type = finden_art(package_name)
         if type is 0:
             herunterladen_package(0, package_name)
