@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # %1 namen von datei
-# %2 configure befehl
+# %2 configure befehl;
 cd %1
 touch ../ausgebe/configure_out.txt
 touch ../ausgebe/make_out.txt

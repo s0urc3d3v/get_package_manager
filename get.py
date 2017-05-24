@@ -23,6 +23,17 @@ def loeschen_herunterladen_datei():
     #  müsst hinzufügen die herunterladen_datei_namen für diesen dingen
 
 
+def automatisch_konfigurieren():
+
+
+# lesen aus datei zu finden arguments und datei namen aus method
+
+
+def anrufen_skipt_mit_argumente(datei_namen_ohne_erweiterung, configure_arguemente):
+    Process = os.popen("./kompilieren_skript/Global_skript.sh %s %s" % datei_namen_ohne_erweiterung,
+                       configure_arguemente)
+
+
 def anrufen_skipt(skript_pfad):
     path = os.getcwd() + "/kompilieren_skript/" + skript_pfad
     subprocess.call(path, shell=True)
@@ -111,6 +122,8 @@ def kopilieren_code_fall_benoetigt():
         anrufen_skipt('kompilieren_python3.sh')  # Ich kennt dies können besser gemacht
     elif 'gcc' in jetzt_datei_namen:
         anrufen_skipt('kompilieren_gcc.sh')
+    else:
+        automatisch_konfigurieren()
 
 
 def herunterladen_mit_ftp(url):
