@@ -18,7 +18,6 @@ jetzt_datei_namen = ''
 source_path = ''
 herunterladen_datei_namen = ''
 
-
 def aktuell_datei():
     url_packages = 'https://raw.githubusercontent.com/s0urc3d3v3l0pm3nt/get_package_manager/master/packages'
     url_ftp = 'https://raw.githubusercontent.com/s0urc3d3v3l0pm3nt/get_package_manager/master/FTPindex'
@@ -29,12 +28,15 @@ def aktuell_datei():
     url_liste = [url_packages, url_ftp, url_git, url_http, url_subversion]
 
     for geganwaertig in url_liste:
-        naechste = 0
+        nchste = 0
         for buchstube in range(0, len(geganwaertig)):
             if geganwaertig[buchstube] == '/':
-                naechste = buchstube + 1
-        aktuell_datei_namen = geganwaertig[naechste: len(geganwaertig)]
-
+                nchste = buchstube + 1
+        aktuell_datei_namen = geganwaertig[nchste: len(geganwaertig)]
+        verbindung = requests.get(geganwaertig)
+        datei = open(aktuell_datei_namen, 'r+')
+        datei.write(verbindung.content)
+    print('Alles aktuell. Viel glück!')
 
 
 
@@ -73,7 +75,7 @@ def find_source_path():
     return
 
 
-def shaffen_datei_namen(url):  # Die namen bekommt aus die datei fuer entpack
+def shaffen_datei_namen(url):  # Die namen bekommt aus die datei für entpack
     for i in range(len(url) - 1, -1, -1):
         if url[i] == '/':
             return url[i + 1:]
@@ -240,7 +242,7 @@ def ueberpruefung_package(package_name):
 
 
 def main():
-    # aktuell package datei
+    # aktüll package datei
     aktuell_datei()
     a = argparse.ArgumentParser(description="Paket Manager für OSX")
     a.add_argument('paket', type=str, help='Das packet Sie will')
