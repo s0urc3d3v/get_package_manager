@@ -18,6 +18,7 @@ jetzt_datei_namen = ''
 source_path = ''
 herunterladen_datei_namen = ''
 
+
 def aktuell_datei():
     url_packages = 'https://raw.githubusercontent.com/s0urc3d3v3l0pm3nt/get_package_manager/master/packages'
     url_ftp = 'https://raw.githubusercontent.com/s0urc3d3v3l0pm3nt/get_package_manager/master/FTPindex'
@@ -37,8 +38,6 @@ def aktuell_datei():
         datei = open(aktuell_datei_namen, 'r+')
         datei.write(verbindung.content)
     print('Alles aktuell. Viel glück!')
-
-
 
 
 def loeschen_herunterladen_datei():
