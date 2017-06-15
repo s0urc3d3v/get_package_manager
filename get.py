@@ -11,11 +11,32 @@ from clint.textui import progress
 import requests
 from os.path import expanduser
 from pathlib import Path
+import contextlib
 
 os_name = os.name
 jetzt_datei_namen = ''
 source_path = ''
 herunterladen_datei_namen = ''
+
+
+def aktuell_datei():
+    url_packages = 'https://raw.githubusercontent.com/s0urc3d3v3l0pm3nt/get_package_manager/master/packages'
+    url_ftp = 'https://raw.githubusercontent.com/s0urc3d3v3l0pm3nt/get_package_manager/master/FTPindex'
+    url_git = 'https://raw.githubusercontent.com/s0urc3d3v3l0pm3nt/get_package_manager/master/GITindex'
+    url_http = 'https://raw.githubusercontent.com/s0urc3d3v3l0pm3nt/get_package_manager/master/HTTPindex'
+    url_subversion = 'https://raw.githubusercontent.com/s0urc3d3v3l0pm3nt/get_package_manager/master/SUBVERSIONlist'
+
+    url_liste = [url_packages, url_ftp, url_git, url_http, url_subversion]
+
+    for geganwaertig in url_liste:
+        naechste = 0
+        for buchstube in range(0, len(geganwaertig)):
+            if geganwaertig[buchstube] == '/':
+                naechste = buchstube + 1
+        aktuell_datei_namen = geganwaertig[naechste: len(geganwaertig)]
+
+
+
 
 
 def loeschen_herunterladen_datei():
@@ -24,14 +45,13 @@ def loeschen_herunterladen_datei():
 
 
 def automatisch_konfigurieren():
+    print ""
+    # lesen aus datei zu finden arguments und datei namen aus method
 
 
-# lesen aus datei zu finden arguments und datei namen aus method
-
-
-def anrufen_skipt_mit_argumente(datei_namen_ohne_erweiterung, configure_arguemente):
-    Process = os.popen("./kompilieren_skript/Global_skript.sh %s %s" % datei_namen_ohne_erweiterung,
-                       configure_arguemente)
+def anrufen_skipt_mit_argumente(datei_namen_ohne_erweiterung,
+                                configure):  # ändern function behaltet aber neuer function werden benutzten diesen function
+    process = os.popen("./kompilieren_skript/Global_skript.sh %s %s" % (datei_namen_ohne_erweiterung, configure))
 
 
 def anrufen_skipt(skript_pfad):
@@ -63,18 +83,18 @@ def finden_art_und_entpack():
     dateiweiterung = ''
     for i in range(0, len(jetzt_datei_namen)):
         if jetzt_datei_namen[i] == '.':
-            if ((jetzt_datei_namen[i + 1]).isdigit() and (jetzt_datei_namen[i - 1]).isdigit()) != True:
+            if not ((jetzt_datei_namen[i + 1]).isdigit() and (jetzt_datei_namen[i - 1]).isdigit()):
                 dateiweiterung = jetzt_datei_namen[i:]
                 break
     if dateiweiterung == '':
         print('Datei ist korrupt, tut mir leid')
     if dateiweiterung == ".zip" or dateiweiterung == '.gzip':
-        # File is a zip
+        # Zip
         fileHandle = open('packageFile', 'rb')
         zipfile.ZipFile("packageName").extractall()
 
-    elif dateiweiterung == '.tar' or dateiweiterung == '.tar.gz' or dateiweiterung == '.tgz':
-        #  File is either a tar or tar.gz and can be extracted with 'tar'
+    elif dateiweiterung == '.tar' or dateiweiterung == '.tar.gz' or dateiweiterung == '.tgz' or dateiweiterung == '.tar.xz':
+        #  Datei ist eine 'tar'. .tar.xz Datei sind nicht fertig.
         tar = tarfile.open(jetzt_datei_namen)
         tar.extractall()
         tar.close()
@@ -122,6 +142,8 @@ def kopilieren_code_fall_benoetigt():
         anrufen_skipt('kompilieren_python3.sh')  # Ich kennt dies können besser gemacht
     elif 'gcc' in jetzt_datei_namen:
         anrufen_skipt('kompilieren_gcc.sh')
+    elif 'gdb' in jetzt_datei_namen:
+        anrufen_skipt_mit_argumente(jetzt_datei_namen, "configure")
     else:
         automatisch_konfigurieren()
 
@@ -130,13 +152,11 @@ def herunterladen_mit_ftp(url):
     global jetzt_datei_namen  # bekommen var Berichtigungen
     jetzt_datei_namen = shaffen_datei_namen(url)
     source_exists = os.path.exists(os.path.abspath(jetzt_datei_namen))
-    if not source_exists:
-        urllib.urlretrieve(url, jetzt_datei_namen)  # TODO zulassen datei zu speeren ändern Ort sein
+    if not source_exists:  # prüfung ob datei existiert
+        urllib.urlretrieve(url, jetzt_datei_namen)
     finden_art_und_entpack()
     kopilieren_code_fall_benoetigt()
-    # NOTE: url müsst mit ftp:// beginnern
-
-    # TODO: macht das datei nicht herunterladen ob datei Existiert
+    # NOTE: url müsst mit ftp:// begonnen
 
 
 def herunterladen_mit_http(package_name, url):
@@ -220,12 +240,14 @@ def ueberpruefung_package(package_name):
 
 
 def main():
+    # aktuell package datei
+    aktuell_datei()
     a = argparse.ArgumentParser(description="Paket Manager für OSX")
     a.add_argument('paket', type=str, help='Das packet Sie will')
     args = a.parse_args()
-    package_name = args.package
+    package_name = args.paket
     if ueberpruefung_package(package_name):
-        type = finden_art(package_name)
+        type = finden_art(package_name)  # hunterladen weg
         if type is 0:
             herunterladen_package(0, package_name)
         elif type is 1:
