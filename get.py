@@ -244,7 +244,7 @@ def main():
     # aktüll package datei
     aktuell_datei()
     a = argparse.ArgumentParser(description="Paket Manager für OSX")
-    a.add_argument('paket', type=str, help='Das packet Sie will')
+    a.add_argument('paket', type=str, help='Das packet Sie wollen')
     args = a.parse_args()
     package_name = args.paket
     if ueberpruefung_package(package_name):
