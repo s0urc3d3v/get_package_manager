@@ -19,7 +19,6 @@ Right now everything is over HTTP NOT https.  This should change in the future.
 
 -----------------
 
-follow me on twitter [@m3lbing](https://twitter.com/m3lbing)
 
 find me on reddit: [s0urc3_d3v3l0pm3nt](https://www.reddit.com/user/s0urc3_d3v3l0pm3nt)
 
