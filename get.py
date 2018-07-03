@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import argparse
 import os
+import platform
 import subprocess
 import tarfile
 import urllib
@@ -12,6 +13,7 @@ import requests
 from os.path import expanduser
 from pathlib import Path
 import contextlib
+import csv
 
 os_name = os.name
 jetzt_datei_namen = ''
@@ -242,6 +244,29 @@ def ueberpruefung_package(package_name):
 
 def main():
     # aktüll package datei
+    prefsList = []
+    preferances = {}
+    with open("preferances.tsv", "rb") as prefs:
+        fileReader = csv.reader(prefs)
+        for item in fileReader:
+            prefsList.append(item)
+    for pref in prefsList:
+        preferances.update({pref[0], pref[1]})
+    if((preferances.has_key("setup")) == False):
+        system = platform.system()
+        if (system == 'Darwin'):
+            subprocess.call("./setup_osx.sh")
+            with open("preferances.tsv", "rb") as prefs:
+                prefFile = csv.writer(prefs)
+                prefs.write("setup", "true")
+        elif (system.find('Ubuntu') != -1 or system.find('Debian') != -1):
+            subprocess.call("setup_linux.sh")
+            with open("preferances.tsv", "rb") as prefs:
+                prefFile = csv.writer(prefs)
+                prefs.write("setup", "true")
+            subprocess.call("setup_linux.sh")
+        else:
+            print('Automatisch installiern nicht unterstuetzung auf dies OS.  Bitte lesen das ausgeben zu finden was benoertigen fuer ausfuehren.  Meisten dies nur \"wget\" werden sein')
     aktuell_datei()
     a = argparse.ArgumentParser(description="Paket Manager für OSX")
     a.add_argument('paket', type=str, help='Das packet Sie wollen')
