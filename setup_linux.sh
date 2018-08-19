@@ -3,7 +3,7 @@ echo "Vor diese Anwendung ausfueren koennen, muessen Sie, voraussetzung paket in
 echo "Fortfahren? [y,n]"
 read weiter
 if [[ "$weiter" == "y" ]]; then
-    brew install wget
+    sudo apt-get install wget
 else
     echo "Installieren abbrechen"
 fi
