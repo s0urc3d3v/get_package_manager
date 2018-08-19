@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-heir=${PWD##*/}
+hier=${PWD##*/}
 readarray packages < packages
 for ((i = 0; i<${packages}; i++));
 do
