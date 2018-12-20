@@ -2,7 +2,7 @@
 ## a *nix package manager
 
 #WARNING
-Right now everything is over HTTP NOT https.  This should change in the future.
+Right now everything is over HTTP NOT https.  This might change in the future.
 -----
 
 ###To add support for a new package by branching
