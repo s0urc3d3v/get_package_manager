@@ -213,7 +213,10 @@ def herunterladen_package(type, package_name):
     else:
         print("FEHLER: ändern fehler")
 
-
+# 0 = FTP
+# 1 = HTTP
+# 2 = GIT
+# 3 - SUBVERSION
 def finden_art(package_name):
     ftp_list = [line.rstrip('\n') for line in open("FTPindex")]
     for i in ftp_list:
@@ -240,6 +243,13 @@ def ueberpruefung_package(package_name):
         if i == package_name:
             return True
     return False
+
+def vorInstalliernPaket(package_name):
+    paketMitVorInstalliernBenoitigt =""    
+    with open(file_name, 'wb') as f:
+        paketMitVorInstalliernBenoitigt = f.read()
+    if (package_name in paketMitVorInstalliernBenoitigt):
+        #get all items separted by spaces on the line of the package to be installed
 
 
 def main():
@@ -274,6 +284,7 @@ def main():
     package_name = args.paket
     if ueberpruefung_package(package_name):
         type = finden_art(package_name)  # hunterladen weg
+        check
         if type is 0:
             herunterladen_package(0, package_name)
         elif type is 1:
