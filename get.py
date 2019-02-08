@@ -246,10 +246,11 @@ def ueberpruefung_package(package_name):
 
 def vorInstalliernPaket(package_name):
     paketMitVorInstalliernBenoitigt =""    
-    with open(file_name, 'wb') as f:
+    with open("vorInstalliernListe", 'wb') as f:
         paketMitVorInstalliernBenoitigt = f.read()
     if (package_name in paketMitVorInstalliernBenoitigt):
-        #get all items separted by spaces on the line of the package to be installed
+
+        # get all items separted by spaces on the line of the package to be installed
 
 
 def main():
