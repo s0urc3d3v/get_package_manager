@@ -279,7 +279,7 @@ def main():
         else:
             print('Automatisch installiern nicht unterstuetzung auf dies OS.  Bitte lesen das ausgeben zu finden was benoertigen fuer ausfuehren.  Meisten dies nur \"wget\" werden sein')
     aktuell_datei()
-    a = argparse.ArgumentParser(description="Paket Manager für OSX")
+    a = argparse.ArgumentParser(description="Paket Manager für macOS und Linux")
     a.add_argument('paket', type=str, help='Das packet Sie wollen')
     args = a.parse_args()
     package_name = args.paket
