@@ -249,7 +249,7 @@ def vorInstalliernPaket(package_name):
     with open("vorInstalliernListe", 'wb') as f:
         paketMitVorInstalliernBenoitigt = f.read()
     if (package_name in paketMitVorInstalliernBenoitigt):
-
+        print ""
         # get all items separted by spaces on the line of the package to be installed
 
 
