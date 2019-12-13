@@ -5,7 +5,7 @@ import os
 import platform
 import subprocess
 import tarfile
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import zipfile
 import clint
 from clint.textui import progress
@@ -38,17 +38,18 @@ def aktuell_datei():
         aktuell_datei_namen = geganwaertig[nchste: len(geganwaertig)]
         verbindung = requests.get(geganwaertig)
         datei = open(aktuell_datei_namen, 'r+')
-        datei.write(verbindung.content)
+        zuSchreiben = verbindung.text
+        datei.write(zuSchreiben)
     print('Alles aktuell. Viel glück!')
 
 
 def loeschen_herunterladen_datei():
-    print 'hello'
+    print('hello')
     #  müsst hinzufügen die herunterladen_datei_namen für diesen dingen
 
 
 def automatisch_konfigurieren():
-    print ""
+    print("")
     # lesen aus datei zu finden arguments und datei namen aus method
 
 
@@ -138,7 +139,7 @@ def kopilieren_code_fall_benoetigt():
             Version = jetzt_datei_namen[n + 1:n + 2]
             break
     if Version.isdigit() == False:
-        print "Keine Version gefunden"
+        print("Keine Version gefunden")
     if ('Python' in jetzt_datei_namen) and ('2' in Version):  # Python 2
         print('Nicht Umgesetzt wurden noch')
     elif ('Python' in jetzt_datei_namen) and ('3' in Version):  # Python 3
@@ -156,7 +157,7 @@ def herunterladen_mit_ftp(url):
     jetzt_datei_namen = shaffen_datei_namen(url)
     source_exists = os.path.exists(os.path.abspath(jetzt_datei_namen))
     if not source_exists:  # prüfung ob datei existiert
-        urllib.urlretrieve(url, jetzt_datei_namen)
+        urllib.request.urlretrieve(url, jetzt_datei_namen)
     finden_art_und_entpack()
     kopilieren_code_fall_benoetigt()
     # NOTE: url müsst mit ftp:// begonnen
@@ -166,14 +167,14 @@ def herunterladen_mit_http(package_name, url):
     global jetzt_datei_namen  # bekommen var Berichtigungen
     jetzt_datei_namen = shaffen_datei_namen(url)  # Dies müsst in alles herunterladen methoden sein!
     file_name = shaffen_datei_namen(url)
-    print 'herunterladen gestartet'
+    print('herunterladen gestartet')
     responce = requests.get(url, stream=True)
     if not os.path.exists(os.path.abspath(jetzt_datei_namen)):
         with open(file_name, 'wb') as f:
             for block in responce.iter_content(chunk_size=1024):
                 if block:
                     f.write(block)
-    print 'herunterladen fertig'
+    print('herunterladen fertig')
     finden_art_und_entpack()
     kopilieren_code_fall_benoetigt()
 
@@ -184,12 +185,12 @@ def herunterladen_mit_http(package_name, url):
 
 
 def klon_mit_git(package_name, url):
-    urllib.urlretrieve(url, 'packageFile')
+    urllib.request.urlretrieve(url, 'packageFile')
     # NOTE url müsst begonnen git:// mit
 
 
 def klon_mit_subversion(package_name, url):
-    urllib.urlretrieve(url, 'packageFile')
+    urllib.request.urlretrieve(url, 'packageFile')
     # NOTE url müsst begonnensubverion mit
 
 
@@ -249,7 +250,7 @@ def vorInstalliernPaket(package_name):
     with open("vorInstalliernListe", 'wb') as f:
         paketMitVorInstalliernBenoitigt = f.read()
     if (package_name in paketMitVorInstalliernBenoitigt):
-        print ""
+        print("")
         # get all items separted by spaces on the line of the package to be installed
 
 
@@ -263,7 +264,7 @@ def main():
             prefsList.append(item)
     for pref in prefsList:
         preferances.update({pref[0], pref[1]})
-    if((preferances.has_key("setup")) == False):
+    if(("setup" in preferances) == False):
         system = platform.system()
         if (system == 'Darwin'):
             subprocess.call("./setup_osx.sh")
