@@ -18,8 +18,3 @@ Right now everything is over HTTP NOT https.  This might change in the future.
 * May need root to compile software correctly
 
 -----------------
-
-
-find me on reddit: [s0urc3_d3v3l0pm3nt](https://www.reddit.com/user/s0urc3_d3v3l0pm3nt)
-
-
